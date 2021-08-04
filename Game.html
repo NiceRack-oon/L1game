@@ -1,11 +1,12 @@
 <!doctype html>
 <head>
-<title>Gamme</title>
+<title>Box</title>
 </head>
 <body>
-<canvas id="gameCanvas" width="400" height="400"></canvas>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
     var canvas , canvasContext;
+        
         
         window.onload = function(){
           canvas = document.getElementById('gameCanvas');
@@ -20,14 +21,24 @@
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
     
+        var bg = new Image();
+        bg.src = 'background.jpg';
+        
     function mainloop(){
         colorRect(0,0,canvas.width,canvas.height,'black');
-           colorRect(0,0,20,20,'crimson');
+        drawImgs(bg,0,0,canvas.width,canvas.height); // bg img
+           colorRect(playerXpos,playerYpos,PLAYER_SIZE,PLAYER_SIZE,'crimson');
     }
         function colorRect(x,y,w,h,c){
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x,y,w,h);
         }
+        
+        function drawImgs(src,x,y,w,h){
+            canvasContext.drawImage(src,x,y,w,h);
+        }
+     
+
         
         
         
