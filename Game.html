@@ -18,16 +18,19 @@
             document.addEventListener('keyup', keyReleased)
             setInterval(mainloop, 1000 / 50);
         }
-
-        var playerXpos = 0;
-        var playerYpos = 0;
+        
+        var playerXpos = 300;
+        var playerYpos = 500;
         var playerXspeed = 0;
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
 
-//        var obsXpos
-//        var obsYpos
-//        const OBS_SIZE
+        var obsXpos = 805;
+        var obsYpos = 550;
+        var obsYspeed = 0;
+        var obsXspeed = 5;
+        const OBS_WIDTH = 50;
+        const OBS_HEIGHT = 500;
 
         var spaceKeyPressed = false;
         const SPACE = 32;
@@ -39,7 +42,11 @@
             colorRect(0, 0, canvas.width, canvas.height, 'black');
             drawImgs(bg, 0, 0, canvas.width, canvas.height); // bg img
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'crimson');
+            colorRect(obsXpos, obsYpos, OBS_WIDTH, OBS_HEIGHT, 'cornflowerblue');
+            
             playerMove();
+            obsMove();
+            
         }
 
 
@@ -72,6 +79,12 @@
                playerYspeed  = -5;
             }
         }
+         function obsMove(){
 
+                obsXpos -= obsXspeed
+
+        
+        }
+//  obsxpos += obsXspeed
     </script>
 </body>
