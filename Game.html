@@ -36,16 +36,17 @@
         const SPACE = 32;
 
         var bg = new Image();
-        bg.src = 'background.jpg';
+        bg.src = 'wall.jpg';
 
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black');
             drawImgs(bg, 0, 0, canvas.width, canvas.height); // bg img
-            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'crimson');
-            colorRect(obsXpos, obsYpos, OBS_WIDTH, OBS_HEIGHT, 'cornflowerblue');
+            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'lightblue');
+            colorRect(obsXpos, obsYpos, OBS_WIDTH, OBS_HEIGHT, 'indianred');
             
             playerMove();
             obsMove();
+            
             
         }
 
@@ -82,9 +83,14 @@
          function obsMove(){
 
                 obsXpos -= obsXspeed
-
+                  if (obsXpos < -50)
+             obsXpos = 805; 
         
         }
-//  obsxpos += obsXspeed
+        
+
+    
+    
+    
     </script>
 </body>
