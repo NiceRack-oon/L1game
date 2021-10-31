@@ -24,32 +24,96 @@
         var playerXspeed = 0;
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
-
-        var obsXpos = 805;
-        var obsYpos = 550;
-        var obsYspeed = 0;
-        var obsXspeed = 5;
-        const OBS_WIDTH = 50;
-        const OBS_HEIGHT = 500;
+        
+        var username = '';
+        while(username == '' || username == null){
+            username = prompt('what is your name?')
+        }
+        
+        var speed = 0;
+        
+        var difficulty = '';
+        var pass = false;
+        
+        while(pass == false){
+            difficulty = prompt('difficulty?','easy');
+            if(difficulty != null){
+                
+                  pass = true;
+            }
+          
+        }
+        if (difficulty == 'easy'){
+            speed = 4;
+        }
+        
+//        var obsXpos = 805;
+//        var obsYpos = 8;
+//        var obsYspeed = 0;
+//        var obsXspeed = 5;
+//        const OBS_WIDTH = 50;
+//        const OBS_HEIGHT = 500;
+        
+        var starting = 'true';
 
         var spaceKeyPressed = false;
         const SPACE = 32;
 
         var bg = new Image();
-        bg.src = 'wall.jpg';
+        bg.src = 'skyline.png';
 
         function mainloop() {
             colorRect(0, 0, canvas.width, canvas.height, 'black');
             drawImgs(bg, 0, 0, canvas.width, canvas.height); // bg img
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'lightblue');
-            colorRect(obsXpos, obsYpos, OBS_WIDTH, OBS_HEIGHT, 'indianred');
+
+            
+            if(starting){
+                for(var i = 0; i < 5; i++){
+                    makeObs();
+                }
+                starting = false;
+            }
             
             playerMove();
             obsMove();
+            drawObs();
+            
             
             
         }
+        
+        
+        var obsCount = 0;
+        var objects = [];
 
+        function makeObs(){
+            const OBS_WIDTH = 50;
+            const OBS_HEIGHT = Math.floor(Math.random()*(canvas.height * 0.6 - canvas.height * 0.3) + canvas.height * 0.3); // between 60% - 30% height
+            
+            var obsXpos = canvas.width + (OBS_WIDTH * (obsCount * 3));
+            var obsYpos = Math.floor(Math.random()*(canvas.height - OBS_HEIGHT/2));
+            var obsXspeed = 2;
+            
+            obsCount++;
+            
+            var obs = {
+                obsXpos: obsXpos,
+                obsYpos: obsYpos,
+                OBS_WIDTH: OBS_WIDTH,
+                OBS_HEIGHT: OBS_HEIGHT,
+                obsXspeed: obsXspeed
+            }
+            
+            objects.push(obs);
+        }
+        
+        function drawObs(){
+            objects.forEach(function(o,i,array){
+                colorRect(o.obsXpos, o.obsYpos, o.OBS_WIDTH, o.OBS_HEIGHT, 'indianred');
+            });
+        }
+        
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
@@ -59,6 +123,7 @@
         function drawImgs(src, x, y, w, h) {
             canvasContext.drawImage(src, x, y, w, h);
         }
+       
 
         function keypressed(evt) {
             if (evt.keyCode == SPACE) {
@@ -77,16 +142,23 @@
             playerYspeed += 0.2;
             
             if(spaceKeyPressed || playerYpos + PLAYER_SIZE > canvas.height){
-               playerYspeed  = -5;
+               playerYspeed  = -3;
             }
         }
          function obsMove(){
-
-                obsXpos -= obsXspeed
-                  if (obsXpos < -50)
-             obsXpos = 805; 
-        
-        }
+             objects.forEach(function(o,i,array){
+                o.obsXpos -= o.obsXspeed
+                  if (o.obsXpos - o.OBS_WIDTH < 0){
+                    o.obsXpos = canvas.width - o.OBS_WIDTH; 
+                      
+                  }
+            if(o.obsYpos + o.OBS_HEIGHT > playerYpos && o.obsYpos < playerYpos + PLAYER_SIZE && o.obsXpos + o.OBS_WIDTH > playerXpos && o.obsXpos < playerXpos + PLAYER_SIZE){
+               console.log('hit')
+               }
+            
+            });
+        } 
+      
         
 
     
