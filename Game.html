@@ -24,32 +24,110 @@
         var playerXspeed = 0;
         var playerYspeed = 4;
         const PLAYER_SIZE = 20;
-
-        var obsXpos = 805;
-        var obsYpos = 550;
-        var obsYspeed = 0;
-        var obsXspeed = 5;
-        const OBS_WIDTH = 50;
-        const OBS_HEIGHT = 500;
-
+        
+        var username = '';
+        while(username == '' || username == null){    //username
+            username = prompt('what is your name?')
+        }
+        
+        var speed = 0;
+        
+        var difficulty = '';
+        var pass = false;
+        
+        while(pass == false){
+            difficulty = prompt('difficulty? Please answer in lowercase.','easy,medium,hard');
+            if(difficulty != null){                                                                       //difficulty
+                
+                  pass = true;
+            }
+          
+        }
+        if (difficulty == 'easy'){
+            speed = 4;
+        }
+         if (difficulty == 'medium'){
+            speed = 5;
+        } if (difficulty == 'hard'){
+            speed = 6;
+        }
+        
+//        var obsXpos = 805;
+//        var obsYpos = 8;
+//        var obsYspeed = 0;
+//        var obsXspeed = 5;
+//        const OBS_WIDTH = 50;
+//        const OBS_HEIGHT = 500;
+        var score = 0;
+        var starting = 'true';
+         var gamerun = 'true';
         var spaceKeyPressed = false;
         const SPACE = 32;
 
         var bg = new Image();
-        bg.src = 'wall.jpg';
+        bg.src = 'skyline.png';
 
         function mainloop() {
+           if(gamerun){
+              score++;
             colorRect(0, 0, canvas.width, canvas.height, 'black');
             drawImgs(bg, 0, 0, canvas.width, canvas.height); // bg img
+               colortext(score,50,50,'25px Arial','white');
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'lightblue');
-            colorRect(obsXpos, obsYpos, OBS_WIDTH, OBS_HEIGHT, 'indianred');
+
+            
+            if(starting){
+                for(var i = 0; i < 5; i++){
+                    makeObs();
+                }                                     //for creating the obstacles
+                starting = false;
+            }
             
             playerMove();
             obsMove();
+            drawObs();
+              }else {
+                 colorRect(0, 0, canvas.width, canvas.height, '#FF4433'); 
+                  colortext(score,50,50,'25px papyrus','white');
+                  colortext(username + '_YOU_DIED_AT_' + score + '_SCORE.' ,200,300,'50px papyrus[]','white');
+              }
+            
             
             
         }
+        var speed = playerXspeed + 0.1;
+        
+        
+        var obsCount = 0;
+        var objects = [];
 
+        function makeObs(){                                        //obstacles variation
+            const OBS_WIDTH = 50;
+            const OBS_HEIGHT = Math.floor(Math.random()*(canvas.height * 0.6 - canvas.height * 0.3) + canvas.height * 0.3); // between 60% - 30% height
+            
+            var obsXpos = canvas.width + (OBS_WIDTH * (obsCount * 3));
+            var obsYpos = Math.floor(Math.random()*(canvas.height - OBS_HEIGHT/2));          //random obstacle heights
+            var obsXspeed = 2;
+            
+            obsCount++;
+            
+            var obs = {
+                obsXpos: obsXpos,
+                obsYpos: obsYpos,
+                OBS_WIDTH: OBS_WIDTH,
+                OBS_HEIGHT: OBS_HEIGHT,
+                obsXspeed: obsXspeed
+            }
+            
+            objects.push(obs);
+        }
+        
+        function drawObs(){
+            objects.forEach(function(o,i,array){
+                colorRect(o.obsXpos, o.obsYpos, o.OBS_WIDTH, o.OBS_HEIGHT, 'indianred');
+            });
+        }
+        
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
@@ -59,6 +137,13 @@
         function drawImgs(src, x, y, w, h) {
             canvasContext.drawImage(src, x, y, w, h);
         }
+       
+        function colortext(msg,x,y,f,c){
+            canvasContext.font = f;
+            canvasContext.fillStyle = c;
+            canvasContext.fillText(msg, x, y);
+        }
+        
 
         function keypressed(evt) {
             if (evt.keyCode == SPACE) {
@@ -77,16 +162,25 @@
             playerYspeed += 0.2;
             
             if(spaceKeyPressed || playerYpos + PLAYER_SIZE > canvas.height){
-               playerYspeed  = -5;
+               playerYspeed  = -3;
             }
         }
          function obsMove(){
-
-                obsXpos -= obsXspeed
-                  if (obsXpos < -50)
-             obsXpos = 805; 
-        
-        }
+             objects.forEach(function(o,i,array){
+                o.obsXpos -= o.obsXspeed
+                  if (o.obsXpos - o.OBS_WIDTH < 0){
+                    o.obsXpos = canvas.width - o.OBS_WIDTH; 
+                      
+                  }
+            if(o.obsYpos + o.OBS_HEIGHT > playerYpos && o.obsYpos < playerYpos + PLAYER_SIZE && o.obsXpos + o.OBS_WIDTH > playerXpos && o.obsXpos < playerXpos + PLAYER_SIZE){
+                playerYpos = 0;
+                gamerun = false;
+               }
+                 
+            
+            });
+        } 
+      
         
 
     
