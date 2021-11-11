@@ -1,7 +1,7 @@
 <!doctype html>
 
 <head>
-    <title>Box</title>
+    <title>Crappy Bird</title>
 </head>
 
 <body>
@@ -46,7 +46,7 @@
         if (difficulty == 'easy'){
             speed = 4;
         }
-         if (difficulty == 'medium'){
+         if (difficulty == 'medium'){      
             speed = 5;
         } if (difficulty == 'hard'){
             speed = 6;
@@ -54,24 +54,24 @@
         
 //        var obsXpos = 805;
 //        var obsYpos = 8;
-//        var obsYspeed = 0;
+//        var obsYspeed = 0;             //beggining of vars and consts
 //        var obsXspeed = 5;
 //        const OBS_WIDTH = 50;
 //        const OBS_HEIGHT = 500;
         var score = 0;
         var starting = 'true';
          var gamerun = 'true';
-        var spaceKeyPressed = false;
+        var spaceKeyPressed = false;        //basic game vars
         const SPACE = 32;
 
-        var bg = new Image();
+        var bg = new Image();             //background image
         bg.src = 'skyline.png';
 
         function mainloop() {
            if(gamerun){
               score++;
             colorRect(0, 0, canvas.width, canvas.height, 'black');
-            drawImgs(bg, 0, 0, canvas.width, canvas.height); // bg img
+            drawImgs(bg, 0, 0, canvas.width, canvas.height);                        //gamerun and score counter
                colortext(score,50,50,'25px Arial','white');
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'lightblue');
 
@@ -89,7 +89,7 @@
               }else {
                  colorRect(0, 0, canvas.width, canvas.height, '#FF4433'); 
                   colortext(score,50,50,'25px papyrus','white');
-                  colortext(username + '_YOU_DIED_AT_' + score + '_SCORE.' ,200,300,'50px papyrus[]','white');
+                  colortext(username + '_YOU_DIED_AT_' + score + '_SCORE.' ,200,300,'50px papyrus[]','white');    //game over screen
               }
             
             
@@ -115,7 +115,7 @@
                 obsXpos: obsXpos,
                 obsYpos: obsYpos,
                 OBS_WIDTH: OBS_WIDTH,
-                OBS_HEIGHT: OBS_HEIGHT,
+                OBS_HEIGHT: OBS_HEIGHT,     
                 obsXspeed: obsXspeed
             }
             
@@ -123,14 +123,14 @@
         }
         
         function drawObs(){
-            objects.forEach(function(o,i,array){
+            objects.forEach(function(o,i,array){                                               //creating obstacles
                 colorRect(o.obsXpos, o.obsYpos, o.OBS_WIDTH, o.OBS_HEIGHT, 'indianred');
             });
         }
         
 
         function colorRect(x, y, w, h, c) {
-            canvasContext.fillStyle = c;
+            canvasContext.fillStyle = c;                     //functions
             canvasContext.fillRect(x, y, w, h);
         }
 
@@ -139,13 +139,13 @@
         }
        
         function colortext(msg,x,y,f,c){
-            canvasContext.font = f;
+            canvasContext.font = f;                    //for the text
             canvasContext.fillStyle = c;
             canvasContext.fillText(msg, x, y);
         }
         
 
-        function keypressed(evt) {
+        function keypressed(evt) {                           //for the controls
             if (evt.keyCode == SPACE) {
                 spaceKeyPressed = true;
             }
@@ -158,7 +158,7 @@
         }
         
         function playerMove(){
-            playerYpos += playerYspeed;
+            playerYpos += playerYspeed;                       //to move the player model
             playerYspeed += 0.2;
             
             if(spaceKeyPressed || playerYpos + PLAYER_SIZE > canvas.height){
@@ -166,14 +166,14 @@
             }
         }
          function obsMove(){
-             objects.forEach(function(o,i,array){
+             objects.forEach(function(o,i,array){                   //for the obstacle movement
                 o.obsXpos -= o.obsXspeed
                   if (o.obsXpos - o.OBS_WIDTH < 0){
                     o.obsXpos = canvas.width - o.OBS_WIDTH; 
                       
                   }
             if(o.obsYpos + o.OBS_HEIGHT > playerYpos && o.obsYpos < playerYpos + PLAYER_SIZE && o.obsXpos + o.OBS_WIDTH > playerXpos && o.obsXpos < playerXpos + PLAYER_SIZE){
-                playerYpos = 0;
+                playerYpos = 0;                  //collision and death
                 gamerun = false;
                }
                  
